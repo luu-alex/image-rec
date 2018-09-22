@@ -9,14 +9,15 @@
       </div>
       <div class="jumbotron round" style="height:20vh;padding-top:0; margin-bottom:0; flex-direction: row" >
 
-        <div class="form-group">
-          <form id="frmUploader" enctype="multipart/form-data" action="api/Upload/" method="post" style="display:inline">
-            <textarea class="form-control" id="textbox" rows="1" name="chat"> </textarea>
-                          <input type="file" accept="image/*" name="imgUploader" multiple style="display:inline">
-                <!-- <input type="file" name="imgUploader" multiple /> -->
-                <button type="submit" class="btn btn-primary mb-2" name="submit" id="btnSubmit" value="Upload"> Submit </button>
-          </form>
-        </div>
+        <form action="/api/upload" method="post">
+          <div class="form-group">
+            <input type="file" name="fileToUpload" id="fileToUpload">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" name="text">
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
 
       </div>
     </div>
