@@ -6,19 +6,15 @@
             <a href="/" class="navbar-brand d-flex ml-auto w-100" style="font-size:1.6rem;">Chat Bot</a>
           </div>
         </nav>
-        <video autoplay="true" id="videoElement">
-
-        </video>
       </div>
       <div class="jumbotron round" style="height:20vh;padding-top:0; margin-bottom:0; flex-direction: row" >
 
         <div class="form-group">
-          <label for="text"> </label>
-          <textarea class="form-control" id="textbox" rows="1"> </textarea>
           <form id="frmUploader" enctype="multipart/form-data" action="api/Upload/" method="post" style="display:inline">
-              <input type="file" accept="image/*" name="imgUploader" multiple style="display:inline">
-              <!-- <input type="file" name="imgUploader" multiple /> -->
-              <button type="submit" class="btn btn-primary mb-2" name="submit" id="btnSubmit" value="Upload"> Submit </button>
+            <textarea class="form-control" id="textbox" rows="1" name="chat"> </textarea>
+                          <input type="file" accept="image/*" name="imgUploader" multiple style="display:inline">
+                <!-- <input type="file" name="imgUploader" multiple /> -->
+                <button type="submit" class="btn btn-primary mb-2" name="submit" id="btnSubmit" value="Upload"> Submit </button>
           </form>
         </div>
 
@@ -34,5 +30,7 @@
         </div>
       </div>
     </div>
+
+
 </body>
 </html>

@@ -6,19 +6,7 @@
     <title>Upload images to server using Node JS</title>
     <script src="Scripts/jquery-3.1.1.min.js"></script>
     <script src="Scripts/jquery.form.min.js"></script>
-    <script>
-    var video = document.querySelector("#videoElement");
 
-    if (navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({video: true})
-    .then(function(stream) {
-      video.srcObject = stream;
-    })
-    .catch(function(error) {
-      console.log("Something went wrong!");
-    });
-    }
-</script>
     <style>
     #container {
      margin: 0px auto;
