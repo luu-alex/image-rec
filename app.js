@@ -6,10 +6,12 @@ var ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 var watsonRoutes = require('./routes/watson_routes')
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
-app.use("/watson", watsonRoutes)
+
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
+
+app.use("/watson", watsonRoutes)
 
 app.get("/", function(req,res){
   res.render("landing");

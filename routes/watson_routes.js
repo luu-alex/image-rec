@@ -3,17 +3,13 @@ var router = express.Router();
 var ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 
 router.post("/text-input", function(req, res){
-    console.log(req.body.tone)
     var toneAnalyzer = new ToneAnalyzerV3({
         'version_date': '2017-09-21',
         username: 'e20cef90-d928-4529-8000-32e872436e3c',
         password: 'jSDSFGAbtBp7'
     });
 
-    var text = 'Team, I know that times are tough! Product '
-      + 'sales have been disappointing for the past three '
-      + 'quarters. We have a competitive product, but we '
-      + 'need to do a better job of selling it!'
+    var text = req.body.tone;
 
     var toneParams = {
       'tone_input': { 'text': text },
@@ -24,12 +20,13 @@ router.post("/text-input", function(req, res){
       if (error) {
         console.log("error")
         console.log(error);
+        res.send(error);
       } else { 
-        console.log("hi this ran")
-        console.log(JSON.stringify(toneAnalysis, null, 2));
+//        console.log(JSON.stringify(toneAnalysis, null, 2));
+        res.send(JSON.stringify(toneAnalysis, null, 2));
       }
     });
-    res.send("complete")
+    
 })
 
     
