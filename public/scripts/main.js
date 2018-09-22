@@ -38,8 +38,14 @@ function fire_ajax_submit() {
             var current_time = new moment().format("h:mm a");
             var formattedTime = current_time;
             var template = $("#message-template").html();
+            var tones = "";
+            $.each(response.toneAnalysis.document_tone.tones, function( key, value ) {
+              tones+=(value.tone_name+", ");
+            });
+            tones=tones.substring(0, tones.length - 2);
+            console.log(response.toneAnalysis.document_tone.tones)
             var html = Mustache.render(template, {
-                text: response.toneAnalysis.document_tone.tones[0].tone_name,
+                text: tones,
                 from: response.text,
                 createAt: formattedTime
             });
