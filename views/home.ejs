@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Chat | ChatBot</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <link rel="stylesheet" href="/stylesheets/styles.css" type="text/css" />
+        <script type="text/template" id="message-template">
+            <li class="message">
+                <div class="message__title"><h4>{{from}}</h4><span>{{createAt}}</span></div>
+                <div class="message_body"><p>{{text}}</p></div>
+            </li>
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript" src="/scripts/moment.js"></script>
+        <script type="text/javascript" src="/scripts/mustache.js"></script>
+        <script type="text/javascript" src="/scripts/main.js"></script>
+    </head>
+    <body class="chat">
+        <div class="chat__main">
+            <ol id="messages" class="chat__messages"></ol>
+            <div class="chat__footer">
+                <form id="message-form" action="/watson/text-input" method="post">
+                    <input id="text_input" type="text" name="tone" placeholder="Message" autofocus autocomplete="off"/>
+                    <button>Send</button>
+                </form>
+            </div>
+        </div>
+
+
+    </body>
+</html>

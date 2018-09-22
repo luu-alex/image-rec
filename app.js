@@ -25,21 +25,13 @@ app.use("/watson", watsonRoutes)
 app.get("/", function(req,res){
   res.render("landing");
 })
-app.post('/clarifai/img-input', function(req, res){
-  clarifai.models.predict(Clarifai.GENERAL_MODEL, req.body.link).then(
-    function(response){
-      res.send("success");
-    },
-    function(err){
-      res.send("error");
-    }
-  )
 
+app.get("/home", function(req,res){
+  res.render("home");
 })
-
-app.post('/api/Upload', upload.single('avatar'), function(req, res){
-  console.log(req.file);
-  console.log(req.body.text);
+app.post('/api/Upload', function(req, res){
+  console.log(req);
+  console.log(typeof req.body.text);
   res.send(req.body.text);
 
 });
