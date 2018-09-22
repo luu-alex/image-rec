@@ -18,9 +18,53 @@
   margin:0;
   padding:0;
   font-family:"Post Grotesk Medium",Helvetica,Arial,Sans-serif;
-  
+
 }
 .chat {
    height:70vh;
    padding:0;
+}
+
+.chat__footer {
+  background: #e6eaee;
+  display: flex;
+  padding: 10px;
+  /*height: 60px;*/
+  flex-shrink: 0;
+}
+
+.chat__footer form {
+  flex-grow: 1;
+  display: flex;
+}
+
+.chat__footer form * {
+  margin-right: 10px;
+}
+
+.chat__footer input {
+  border: none;
+  padding: 10px;
+  flex-grow: 1;
+}
+@media (max-width: 600px) {
+  * {
+    font-size: 1rem;
+  }
+
+  .chat__sidebar {
+    display: none;
+  }
+
+  .chat__footer {
+    flex-direction: column;
+  }
+
+  .chat__footer form {
+    margin-bottom: 10px;
+  }
+
+  .chat__footer button {
+    margin-right: 0px;
+  }
 }

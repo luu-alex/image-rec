@@ -16,6 +16,10 @@ app.use("/watson", watsonRoutes)
 app.get("/", function(req,res){
   res.render("landing");
 })
+
+app.get("/home", function(req,res){
+  res.render("home");
+})
 app.post('/api/Upload', function(req, res){
   res.send(req.body.chat+" "+req.body.chat);
 

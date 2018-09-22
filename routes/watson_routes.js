@@ -21,13 +21,13 @@ router.post("/text-input", function(req, res){
         console.log("error")
         console.log(error);
         res.send(error);
-      } else { 
+      } else {
 //        console.log(JSON.stringify(toneAnalysis, null, 2));
-        res.send(JSON.stringify(toneAnalysis, null, 2));
+        res.send({toneAnalysis,text});
       }
     });
-    
+
 })
 
-    
+
 module.exports = router;
