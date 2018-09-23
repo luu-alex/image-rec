@@ -10,14 +10,9 @@ var watsonRoutes = require('./routes/watson_routes');
 var clarifaiRoutes = require('./routes/clarifai');
 
 var T = new Twit({
-  consumer_key: '',
-  consumer_secret: '',
-  access_token: '',
-  access_token_secret: ''
 })
-T.get('search/tweets', { q: 'maga' }, function(err, data, response) {
-  console.log(data)
-})
+console.log(process.env.twitter_consumer_key);
+
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -30,7 +25,11 @@ app.get("/", function(req,res){
   console.log()
   res.render("landing");
 });
-
+app.post('/twitter', function(req, res){
+  T.get('search/tweets', { q: req.body.search }, function(err, data, response) {
+    res.send(data)
+  });
+})
 app.post('/api/Upload', upload.single('avatar'), function(req, res){
   console.log(req.file);
   console.log(req.body.text);
