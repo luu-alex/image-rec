@@ -14,8 +14,8 @@ router.post('/img-input', function(req, res){
   console.log(req.body.imageLink);
   clarifai.models.predict(Clarifai.GENERAL_MODEL, req.body.imageLink).then(
     function(response){
-      res.send("success");
       console.log(response['outputs'][0]['data']['concepts']);
+      res.send(response['outputs'][0]['data']['concepts']);
     },
     function(err){
       res.send("error");
