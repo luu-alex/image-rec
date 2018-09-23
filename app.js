@@ -10,10 +10,10 @@ var watsonRoutes = require('./routes/watson_routes');
 var clarifaiRoutes = require('./routes/clarifai');
 
 var T = new Twit({
-  consumer_key: '',
-  consumer_secret: '',
-  access_token: '',
-  access_token_secret: ''
+  consumer_key: process.env.TWITCONAPIKEY,
+  consumer_secret: process.env.TWITCONAPIKEYSECRET,
+  access_token: process.env.TWITACCESSTOKEN,
+  access_token_secret: process.env.TWITACCESSTOKENSECRET
 })
 T.get('search/tweets', { q: 'maga' }, function(err, data, response) {
   console.log(data)
