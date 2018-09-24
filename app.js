@@ -15,10 +15,16 @@ var clarifai  = new Clarifai.App({
 })
 
 var T = new Twit({
-  consumer_key: 'jN9ryw65BQ59uDCLKwCqV3LX8',
-  consumer_secret: '9O0GufwFvOFy2ZILf08XvVLUuumnF5gzTnq6mHhMIA5xOD2crg',
-  access_token: '1024747908-b5VfHboRGu3n9Pv0NfifyqHUNVqNCXXfNEnyKAy',
-  access_token_secret: 'vcEz9EcMtJr7RKLqZ0sIcmfLP8JkQq4C9QW5TvwCImALW'
+  consumer_key: process.env.TWITCONAPIKEY,
+  consumer_secret: process.env.TWITCONAPIKEYSECRET,
+  access_token: process.env.TWITACCESSTOKEN,
+  access_token_secret: process.env.TWITACCESSTOKENSECRET
+})
+T.get('search/tweets', { q: 'maga' }, function(err, data, response) {
+    for(var i = 0; i < data["statuses"].length;i++){
+            console.log(data["statuses"][i]["text"] + "\n\n");
+      }
+
 })
 console.log(process.env.twitter_consumer_key);
 
@@ -36,11 +42,11 @@ app.get("/", function(req,res){
 });
 app.post('/twitter', function(req, res){
   T.get('search/tweets', { q: req.body.search }, function(err, data, response) {
-    var photos = [];
-    for (var i=0; i<data["statuses"].length;i++) {
-      photos.push(data["statuses"][i]["user"]["profile_image_url"])
-    }
-    res.send(data["statuses"][0])
+      var new_data=""
+      for(var i = 0; i < data["statuses"].length;i++){
+              new_data+=data["statuses"][i]["text"] + "\n\n";
+        }
+    res.send(new_data)
   });
 })
 app.post('/api/Upload', upload.single('avatar'), function(req, res){
