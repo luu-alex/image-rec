@@ -49,23 +49,18 @@ app.post('/twitter', function(req, res){
       }
     )
 
-    var new_data=""
-    for(var i = 0; i < data["statuses"].length;i++){
-        new_data+=data["statuses"][i]["text"] + "\n\n";
-    }
-
-
-    var clean_data=[]
-    var return_data=[]
+    var clean_data=[];
+    var return_data=[];
     var toneAnalyzer = new ToneAnalyzerV3({
         'version_date': '2017-09-21',
         username: process.env.WATSONUSERNAME,
         password: process.env.WATSONPASSWORD
     });
+
     for(var i = 0; i < data["statuses"].length;i++){
         clean_data.push(data["statuses"][i]["text"] + "\n\n");
         var toneParams = {
-          'tone_input': { 'text': data["statuses"][i]["text"] },
+          'tone_input': { 'text': clean_data[i] },
           'content_type': 'application/json'
         };
         toneAnalyzer.tone(toneParams, function (error, toneAnalysis) {
@@ -74,13 +69,13 @@ app.post('/twitter', function(req, res){
             console.log(error);
             res.send(error);
           } else {
-    //        console.log(JSON.stringify(toneAnalysis, null, 2));
-            return_data.push({toneAnalysis})
+           console.log(JSON.stringify(toneAnalysis, null, 2));
+            // return_data.push({toneAnalysis: toneAnalysis})
           }
         });
     }
-
-    res.send(new_data)
+    console.log(return_data);
+    res.send("success")
   });
 })
 app.post('/api/Upload', upload.single('avatar'), function(req, res){

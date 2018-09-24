@@ -5,8 +5,8 @@ var ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 router.post("/text-input", function(req, res){
     var toneAnalyzer = new ToneAnalyzerV3({
         'version_date': '2017-09-21',
-        username: 'e20cef90-d928-4529-8000-32e872436e3c',
-        password: 'jSDSFGAbtBp7'
+        username: process.env.WATSONUSERNAME,
+        password: process.env.WATSONPASSWORD
     });
 
     var text = req.body.tone;
