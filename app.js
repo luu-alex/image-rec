@@ -26,9 +26,6 @@ T.get('search/tweets', { q: 'maga' }, function(err, data, response) {
       photos.push(data["statuses"][i]["user"]["profile_image_url"])
     }
     res.send(data["statuses"][0])
-    for(var i = 0; i < data["statuses"].length;i++){
-            console.log(data["statuses"][i]["text"] + "\n\n");
-      }
 
 })
 console.log(process.env.twitter_consumer_key);
@@ -47,11 +44,32 @@ app.get("/", function(req,res){
 });
 app.post('/twitter', function(req, res){
   T.get('search/tweets', { q: req.body.search }, function(err, data, response) {
-      var new_data=""
+      var new_data=[]
+      var return_data=[]
+      var toneAnalyzer = new ToneAnalyzerV3({
+          'version_date': '2017-09-21',
+          username: 'e20cef90-d928-4529-8000-32e872436e3c',
+          password: 'jSDSFGAbtBp7'
+      });
       for(var i = 0; i < data["statuses"].length;i++){
-              new_data+=data["statuses"][i]["text"] + "\n\n";
-        }
-    res.send(new_data)
+          new_data.push(data["statuses"][i]["text"] + "\n\n");
+          var toneParams = {
+            'tone_input': { 'text': data["statuses"][i]["text"] },
+            'content_type': 'application/json'
+          };
+          toneAnalyzer.tone(toneParams, function (error, toneAnalysis) {
+            if (error) {
+              console.log("error")
+              console.log(error);
+              res.send(error);
+            } else {
+      //        console.log(JSON.stringify(toneAnalysis, null, 2));
+              return_data.push({toneAnalysis})
+            }
+          });
+      }
+
+    res.send(return_data)
   });
 })
 app.post('/api/Upload', upload.single('avatar'), function(req, res){
