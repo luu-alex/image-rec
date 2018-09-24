@@ -9,6 +9,11 @@ var upload = multer({ dest : 'uploads/'});
 var watsonRoutes = require('./routes/watson_routes');
 var clarifaiRoutes = require('./routes/clarifai');
 
+var Clarifai = require('clarifai');
+var clarifai  = new Clarifai.App({
+  apiKey: '51cb209ff80d4ffaa967cc72a0e7f6de'
+})
+
 var T = new Twit({
   consumer_key: process.env.TWITCONAPIKEY,
   consumer_secret: process.env.TWITCONAPIKEYSECRET,
@@ -16,6 +21,11 @@ var T = new Twit({
   access_token_secret: process.env.TWITACCESSTOKENSECRET
 })
 T.get('search/tweets', { q: 'maga' }, function(err, data, response) {
+    var photos = [];
+    for (var i=0; i<data["statuses"].length;i++) {
+      photos.push(data["statuses"][i]["user"]["profile_image_url"])
+    }
+    res.send(data["statuses"][0])
     for(var i = 0; i < data["statuses"].length;i++){
             console.log(data["statuses"][i]["text"] + "\n\n");
       }
