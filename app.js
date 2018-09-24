@@ -26,9 +26,6 @@ T.get('search/tweets', { q: 'maga' }, function(err, data, response) {
       photos.push(data["statuses"][i]["user"]["profile_image_url"])
     }
     res.send(data["statuses"][0])
-    for(var i = 0; i < data["statuses"].length;i++){
-            console.log(data["statuses"][i]["text"] + "\n\n");
-      }
 
 })
 console.log(process.env.twitter_consumer_key);
