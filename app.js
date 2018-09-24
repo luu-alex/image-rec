@@ -14,21 +14,13 @@ var clarifai  = new Clarifai.App({
   apiKey: '51cb209ff80d4ffaa967cc72a0e7f6de'
 })
 
+
 var T = new Twit({
   consumer_key: 'jN9ryw65BQ59uDCLKwCqV3LX8',
   consumer_secret: '9O0GufwFvOFy2ZILf08XvVLUuumnF5gzTnq6mHhMIA5xOD2crg',
   access_token: '1024747908-b5VfHboRGu3n9Pv0NfifyqHUNVqNCXXfNEnyKAy',
   access_token_secret: 'vcEz9EcMtJr7RKLqZ0sIcmfLP8JkQq4C9QW5TvwCImALW'
-})
-T.get('search/tweets', { q: 'maga' }, function(err, data, response) {
-    var photos = [];
-    for (var i=0; i<data["statuses"].length;i++) {
-      photos.push(data["statuses"][i]["user"]["profile_image_url"])
-    }
-    res.send(data["statuses"][0])
-
-})
-console.log(process.env.twitter_consumer_key);
+});
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
@@ -44,32 +36,15 @@ app.get("/", function(req,res){
 });
 app.post('/twitter', function(req, res){
   T.get('search/tweets', { q: req.body.search }, function(err, data, response) {
-      var new_data=[]
-      var return_data=[]
-      var toneAnalyzer = new ToneAnalyzerV3({
-          'version_date': '2017-09-21',
-          username: 'e20cef90-d928-4529-8000-32e872436e3c',
-          password: 'jSDSFGAbtBp7'
-      });
-      for(var i = 0; i < data["statuses"].length;i++){
-          new_data.push(data["statuses"][i]["text"] + "\n\n");
-          var toneParams = {
-            'tone_input': { 'text': data["statuses"][i]["text"] },
-            'content_type': 'application/json'
-          };
-          toneAnalyzer.tone(toneParams, function (error, toneAnalysis) {
-            if (error) {
-              console.log("error")
-              console.log(error);
-              res.send(error);
-            } else {
-      //        console.log(JSON.stringify(toneAnalysis, null, 2));
-              return_data.push({toneAnalysis})
-            }
-          });
-      }
-
-    res.send(return_data)
+    var photos = [];
+    for (var i=0; i<data["statuses"].length;i++) {
+      photos.push(data["statuses"][i]["user"]["profile_image_url"])
+    }
+    var new_data=""
+    for(var i = 0; i < data["statuses"].length;i++){
+        new_data+=data["statuses"][i]["text"] + "\n\n";
+    }
+    res.send(new_data)
   });
 })
 app.post('/api/Upload', upload.single('avatar'), function(req, res){
