@@ -1,13 +1,9 @@
 <%- include ./partials/header.ejs %>
     <div class="container" style="flex-direction: column;">
-      <div class=" jumbotron round chat" style="padding:0">
-        <nav class="navbar navbar-container nav-wrapper navbar-light navbar-expand-md bg-faded justify-content-center head1 name" >
-          <div class="">
-            <a href="/" class="navbar-brand d-flex ml-auto w-100" style="font-size:1.6rem;">Chat Bot</a>
-          </div>
-        </nav>
+      <div class="center">
+        <h1> Analyze tweets by searching a word </h1>
       </div>
-      <div class="jumbotron round" style="height:20vh;padding-top:0; margin-bottom:0; flex-direction: row" >
+      <div class="jumbotron round white" style="height:30vh; margin-bottom:0; flex-direction: row" >
 
         <form action="/twitter" method="post">
           <div class="form-group">
@@ -17,8 +13,13 @@
         </form>
 
       </div>
-      <div class="jumbotron round" id="response" style="height:20vh;padding-top:0; margin-bottom:0; flex-direction: row" >
-
+      <div class="jumbotron round" id="response" style="padding-top:0; margin-bottom:0; flex-direction: row" >
+        <h3> This is tweet analyzer. </h3> <p> We wanted to find out if there was a trend amongst people who tweeted certain keywords.
+          How to use this app. Search a keyword, and we'll find multiple tweets with that keyword,  using image recognition we determine likeness
+          within the profile pictures of the people tweeting that certain keyword. As well we try to find the average tone of the tweet.
+          For example, people who tweet maga are 50% serious and angry.
+           We created this app using IBM Watson's tone analyzer to determine the tone of a tweet and Clarfai's image recognition API
+          determine the characteristics of a profile picture on twitter </p>
         <!-- <div class="form-group">
           <label for="text"> </label>
           <form id="text-input" action="/watson/text-input" method="post" style="display:inline">
@@ -28,20 +29,7 @@
         </div> -->
 
       </div>
-      <form action="/clarifai/img-input" method="post" style="display:inline">
-        <div class="form-group">
-          <label for="exampleInputEmail1">Clarify </label>
-          <input type="text" class="form-control" id="exampleInputEmail1" placeholder=".jpg links" name="imageLink">
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
 
-    </div>
-    <div class="chat__footer">
-        <form id="message-form" action="/watson/text-input" method="post">
-            <input type="text" name="tone" placeholder="Message" autofocus autocomplete="off"/>
-            <button>Send</button>
-        </form>
     </div>
 
 
