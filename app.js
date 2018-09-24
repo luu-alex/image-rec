@@ -74,10 +74,7 @@ app.post('/twitter', function(req, res){
     res.send("success")
   });
 })
-app.post('/api/Upload', upload.single('avatar'), function(req, res){
-  console.log(req.file);
-  console.log(req.body.text);
-})
+
 app.get("/home", function(req,res){
   res.render("home");
 })
