@@ -33,6 +33,7 @@ app.get("/", function(req,res){
 app.post('/twitter', function(req, res){
   T.get('search/tweets', { q: req.body.search }, function(err, data, response) {
     var photos = [];
+    console.log(data);
     for (var i=0; i<data["statuses"].length;i++) {
       photos.push(data["statuses"][i]["user"]["profile_image_url"])
     }
