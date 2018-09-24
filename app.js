@@ -11,15 +11,15 @@ var clarifaiRoutes = require('./routes/clarifai');
 
 var Clarifai = require('clarifai');
 var clarifai  = new Clarifai.App({
-  apiKey: '51cb209ff80d4ffaa967cc72a0e7f6de'
+  apiKey: process.env.CLARIFAIAPIKEY
 })
 
 
 var T = new Twit({
-  consumer_key: 'jN9ryw65BQ59uDCLKwCqV3LX8',
-  consumer_secret: '9O0GufwFvOFy2ZILf08XvVLUuumnF5gzTnq6mHhMIA5xOD2crg',
-  access_token: '1024747908-b5VfHboRGu3n9Pv0NfifyqHUNVqNCXXfNEnyKAy',
-  access_token_secret: 'vcEz9EcMtJr7RKLqZ0sIcmfLP8JkQq4C9QW5TvwCImALW'
+  consumer_key: process.env.TWITCONAPIKEY,
+  consumer_secret: process.env.TWITCONAPIKEYSECRET,
+  access_token: process.env.TWITACCESSTOKEN,
+  access_token_secret: process.env.TWITACCESSTOKENSECRET
 });
 
 app.set('view engine', 'ejs');
@@ -48,10 +48,38 @@ app.post('/twitter', function(req, res){
         console.log("error");
       }
     )
+
     var new_data=""
     for(var i = 0; i < data["statuses"].length;i++){
         new_data+=data["statuses"][i]["text"] + "\n\n";
     }
+
+
+    var clean_data=[]
+    var return_data=[]
+    var toneAnalyzer = new ToneAnalyzerV3({
+        'version_date': '2017-09-21',
+        username: process.env.WATSONUSERNAME,
+        password: process.env.WATSONPASSWORD
+    });
+    for(var i = 0; i < data["statuses"].length;i++){
+        clean_data.push(data["statuses"][i]["text"] + "\n\n");
+        var toneParams = {
+          'tone_input': { 'text': data["statuses"][i]["text"] },
+          'content_type': 'application/json'
+        };
+        toneAnalyzer.tone(toneParams, function (error, toneAnalysis) {
+          if (error) {
+            console.log("error")
+            console.log(error);
+            res.send(error);
+          } else {
+    //        console.log(JSON.stringify(toneAnalysis, null, 2));
+            return_data.push({toneAnalysis})
+          }
+        });
+    }
+
     res.send(new_data)
   });
 })
