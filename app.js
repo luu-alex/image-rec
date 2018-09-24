@@ -40,6 +40,14 @@ app.post('/twitter', function(req, res){
     for (var i=0; i<data["statuses"].length;i++) {
       photos.push(data["statuses"][i]["user"]["profile_image_url"])
     }
+    clarifai.models.predict(Clarifai.GENERAL_MODEL, photos).then(
+      function(response){
+        console.log(response['outputs'][0]['data']['concepts']);
+      },
+      function(err){
+        console.log("error");
+      }
+    )
     var new_data=""
     for(var i = 0; i < data["statuses"].length;i++){
         new_data+=data["statuses"][i]["text"] + "\n\n";
