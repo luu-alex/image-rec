@@ -16,7 +16,10 @@ var T = new Twit({
   access_token_secret: process.env.TWITACCESSTOKENSECRET
 })
 T.get('search/tweets', { q: 'maga' }, function(err, data, response) {
-  console.log(data)
+    for(var i = 0; i < data["statuses"].length;i++){
+            console.log(data["statuses"][i]["text"] + "\n\n");
+      }
+
 })
 console.log(process.env.twitter_consumer_key);
 
@@ -34,7 +37,11 @@ app.get("/", function(req,res){
 });
 app.post('/twitter', function(req, res){
   T.get('search/tweets', { q: req.body.search }, function(err, data, response) {
-    res.send(data)
+      var new_data=""
+      for(var i = 0; i < data["statuses"].length;i++){
+              new_data+=data["statuses"][i]["text"] + "\n\n";
+        }
+    res.send(new_data)
   });
 })
 app.post('/api/Upload', upload.single('avatar'), function(req, res){
