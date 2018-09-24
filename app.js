@@ -24,7 +24,6 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.text());
 app.use("/watson",watsonRoutes)
-app.use("/clarifai",clarifaiRoutes);
 
 app.get("/", function(req,res){
   //https://api.twitter.com/1.1/search/tweets.json?q=%23superbowl&result_type=recent
