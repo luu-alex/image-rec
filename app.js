@@ -78,6 +78,11 @@ app.post('/twitter', function(req, res){
 app.get("/home", function(req,res){
   res.render("home");
 })
+
+app.get("/testing", function(req,res){
+  res.render("results");
+})
+
 app.post('/api/Upload', function(req, res){
   console.log(req);
   console.log(typeof req.body.text);
