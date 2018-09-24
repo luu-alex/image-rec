@@ -2,9 +2,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
-var multer = require('multer');
 var Twit = require('twit');
-var upload = multer({ dest : 'uploads/'});
 //requiring routes
 var watsonRoutes = require('./routes/watson_routes');
 var clarifaiRoutes = require('./routes/clarifai');
