@@ -5,7 +5,6 @@ var ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
 var Twit = require('twit');
 //requiring routes
 var watsonRoutes = require('./routes/watson_routes');
-var clarifaiRoutes = require('./routes/clarifai');
 
 var Clarifai = require('clarifai');
 var clarifai  = new Clarifai.App({
@@ -72,7 +71,7 @@ app.post('/twitter', function(req, res){
           }
         });
     }
-    console.log(return_data);
+    // console.log(return_data);
     res.send("success")
   });
 })
