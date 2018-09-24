@@ -9,7 +9,16 @@ var upload = multer({ dest : 'uploads/'});
 var watsonRoutes = require('./routes/watson_routes');
 var clarifaiRoutes = require('./routes/clarifai');
 
+var Clarifai = require('clarifai');
+var clarifai  = new Clarifai.App({
+  apiKey: '51cb209ff80d4ffaa967cc72a0e7f6de'
+})
+
 var T = new Twit({
+  consumer_key: 'jN9ryw65BQ59uDCLKwCqV3LX8',
+  consumer_secret: '9O0GufwFvOFy2ZILf08XvVLUuumnF5gzTnq6mHhMIA5xOD2crg',
+  access_token: '1024747908-b5VfHboRGu3n9Pv0NfifyqHUNVqNCXXfNEnyKAy',
+  access_token_secret: 'vcEz9EcMtJr7RKLqZ0sIcmfLP8JkQq4C9QW5TvwCImALW'
 })
 console.log(process.env.twitter_consumer_key);
 
@@ -27,7 +36,11 @@ app.get("/", function(req,res){
 });
 app.post('/twitter', function(req, res){
   T.get('search/tweets', { q: req.body.search }, function(err, data, response) {
-    res.send(data)
+    var photos = [];
+    for (var i=0; i<data["statuses"].length;i++) {
+      photos.push(data["statuses"][i]["user"]["profile_image_url"])
+    }
+    res.send(data["statuses"][0])
   });
 })
 app.post('/api/Upload', upload.single('avatar'), function(req, res){
