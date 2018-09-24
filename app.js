@@ -15,10 +15,10 @@ var clarifai  = new Clarifai.App({
 })
 
 var T = new Twit({
-  consumer_key: process.env.TWITCONAPIKEY,
-  consumer_secret: process.env.TWITCONAPIKEYSECRET,
-  access_token: process.env.TWITACCESSTOKEN,
-  access_token_secret: process.env.TWITACCESSTOKENSECRET
+  consumer_key: 'jN9ryw65BQ59uDCLKwCqV3LX8',
+  consumer_secret: '9O0GufwFvOFy2ZILf08XvVLUuumnF5gzTnq6mHhMIA5xOD2crg',
+  access_token: '1024747908-b5VfHboRGu3n9Pv0NfifyqHUNVqNCXXfNEnyKAy',
+  access_token_secret: 'vcEz9EcMtJr7RKLqZ0sIcmfLP8JkQq4C9QW5TvwCImALW'
 })
 T.get('search/tweets', { q: 'maga' }, function(err, data, response) {
     var photos = [];
