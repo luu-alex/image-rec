@@ -21,6 +21,11 @@ var T = new Twit({
   access_token_secret: process.env.TWITACCESSTOKENSECRET
 })
 T.get('search/tweets', { q: 'maga' }, function(err, data, response) {
+    var photos = [];
+    for (var i=0; i<data["statuses"].length;i++) {
+      photos.push(data["statuses"][i]["user"]["profile_image_url"])
+    }
+    res.send(data["statuses"][0])
     for(var i = 0; i < data["statuses"].length;i++){
             console.log(data["statuses"][i]["text"] + "\n\n");
       }
