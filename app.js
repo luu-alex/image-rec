@@ -8,16 +8,22 @@ var watsonRoutes = require('./routes/watson_routes');
 
 var Clarifai = require('clarifai');
 var clarifai  = new Clarifai.App({
-  apiKey: process.env.CLARIFAIAPIKEY
+  apiKey: "51cb209ff80d4ffaa967cc72a0e7f6de"
 })
 
+var toneAnalyzer = new ToneAnalyzerV3({
+        'version_date': '2017-09-21',
+        username: process.env.WATSONUSERNAME,
+        password: process.env.WATSONPASSWORD
+    });
 
-var T = new Twit({
-  consumer_key: process.env.TWITCONAPIKEY,
-  consumer_secret: process.env.TWITCONAPIKEYSECRET,
-  access_token: process.env.TWITACCESSTOKEN,
-  access_token_secret: process.env.TWITACCESSTOKENSECRET
-});
+
+    var T = new Twit({
+      consumer_key: process.env.TWITCONAPIKEY,
+      consumer_secret: process.env.TWITCONAPIKEYSECRET,
+      access_token: process.env.TWITACCESSTOKEN,
+      access_token_secret: process.env.TWITACCESSTOKENSECRET
+    });
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
@@ -34,46 +40,67 @@ app.get("/", function(req,res){
 app.post('/twitter', function(req, res){
     console.log(req.body.search)
   T.get('search/tweets', { q: req.body.search }, function(err, data, response) {
-    var photos = [];
-    console.log(data);
-    for (var i=0; i<data["statuses"].length;i++) {
-      photos.push(data["statuses"][i]["user"]["profile_image_url"])
-    }
-    clarifai.models.predict(Clarifai.GENERAL_MODEL, photos).then(
-      function(response){
-        console.log(response['outputs'][0]['data']['concepts']);
+    // var photos = [];
+    // for (var i=0; i<Math.min(data["statuses"].length,3);i++) {
+    //   photo = (data["statuses"][i]["user"]["profile_image_url"])
+    //   clarifai.models.predict(Clarifai.GENERAL_MODEL, photo).then(
+    //     function(response){
+    //       console.log(response)
+    //       // photos.push(response['outputs'][0]['data']['concepts']);
+    //     },
+    //     function(err){
+    //       console.log("error");
+    //     }
+    //   )
+    // }
+    // console.log(photos);
+
+    var toneParams = {
+      'tone_input': { 'text': data["statuses"][0]["text"] },
+      'content_type': 'application/json'
+    };
+
+    clarifai.models.predict(Clarifai.GENERAL_MODEL, data["statuses"][0]["user"]["profile_image_url"]).then(
+      function(response){ //this is the clarifai response back
+        // photos.push(response['outputs'][0]['data']['concepts']);
+        toneAnalyzer.tone(toneParams, function (error, toneAnalysis) {
+          if (error) {
+            console.log(error);
+            res.send(error);
+          } else {
+            console.log(toneAnalysis); //tone response
+            console.log(response) //clarifai response
+            // return_data.push({toneAnalysis: toneAnalysis})
+          }
+        });
       },
       function(err){
         console.log("error");
       }
     )
 
+
     var clean_data=[];
     var return_data=[];
-    var toneAnalyzer = new ToneAnalyzerV3({
-        'version_date': '2017-09-21',
-        username: process.env.WATSONUSERNAME,
-        password: process.env.WATSONPASSWORD
-    });
 
-    for(var i = 0; i < data["statuses"].length;i++){
-        clean_data.push(data["statuses"][i]["text"] + "\n\n");
-        var toneParams = {
-          'tone_input': { 'text': clean_data[i] },
-          'content_type': 'application/json'
-        };
-        toneAnalyzer.tone(toneParams, function (error, toneAnalysis) {
-          if (error) {
-            console.log("error")
-            console.log(error);
-            res.send(error);
-          } else {
-           console.log(JSON.stringify(toneAnalysis, null, 2));
-            // return_data.push({toneAnalysis: toneAnalysis})
-          }
-        });
-    }
+    var tones = [];
+    // for(var i = 0; i < Math.min(4, data["statuses"].length);i++){
+    //     clean_data.push(data["statuses"][i]["text"] + "\n\n");
+    //
+    //     toneAnalyzer.tone(toneParams, function (error, toneAnalysis) {
+    //       if (error) {
+    //         console.log("error")
+    //         console.log(error);
+    //         res.send(error);
+    //       } else {
+    //         tones.push(toneAnalysis);
+    //         // return_data.push({toneAnalysis: toneAnalysis})
+    //       }
+    //     });
+    // }
     // console.log(return_data);
+    // console.log(tones.length)
+    // console.log(photos.length)
     res.send("success")
   });
 })
