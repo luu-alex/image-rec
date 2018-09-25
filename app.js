@@ -23,6 +23,7 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.text());
+app.use(bodyParser.json());
 app.use("/watson",watsonRoutes)
 
 app.get("/", function(req,res){
@@ -31,6 +32,7 @@ app.get("/", function(req,res){
   res.render("landing");
 });
 app.post('/twitter', function(req, res){
+    console.log(req.body.search)
   T.get('search/tweets', { q: req.body.search }, function(err, data, response) {
     var photos = [];
     console.log(data);

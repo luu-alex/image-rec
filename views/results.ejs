@@ -9,12 +9,57 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/scripts/main_new.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Work',     11],
+          ['Eat',      2],
+          ['Commute',  2],
+          ['Watch TV', 2],
+          ['Sleep',    7]
+        ]);
+        var options = {
+          title: 'My Daily Activities'
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('piechart1'));
+        chart.draw(data, options);
+      }
+    </script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Work',     11],
+          ['Eat',      2],
+          ['Commute',  2],
+          ['Watch TV', 2],
+          ['Sleep',    7]
+        ]);
+
+        var options = {
+          title: 'My Daily Activities'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart2'));
+
+        chart.draw(data, options);
+      }
+    </script>
 </head>
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <body class="home">
     <div class="container-fluid display-table">
         <div class="row display-table-row">
-            <div class="col-md-2 col-sm-1 hidden-xs display-table-cell v-align box" id="navigation">
+            <!-- <div class="col-md-2 col-sm-1 hidden-xs display-table-cell v-align box" id="navigation">
                 <div class="logo">
                     <a hef="home.html"><img src="https://99designs-start-attachments.imgix.net/alchemy-pictures/2016%2F02%2F22%2F04%2F24%2F31%2Fb7bd820a-ecc0-4170-8f4e-3db2e73b0f4a%2F550250_artsigma.png?auto=format&ch=Width%2CDPR&w=250&h=250" alt="merkery_logo" class="hidden-xs hidden-sm">
                         <img src="https://99designs-start-attachments.imgix.net/alchemy-pictures/2016%2F02%2F22%2F04%2F24%2F31%2Fb7bd820a-ecc0-4170-8f4e-3db2e73b0f4a%2F550250_artsigma.png?auto=format&ch=Width%2CDPR&w=250&h=250" alt="merkery_logo" class="visible-xs visible-sm circle-logo">
@@ -25,12 +70,12 @@
                         <li class="active"><a href="#"><i class="fa fa-home" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Home</span></a></li>
                     </ul>
                 </div>
-            </div>
-            <div class="col-md-10 col-sm-11 display-table-cell v-align">
+            </div> -->
+            <div class="col-md-12 col-sm-12 display-table-cell v-align">
                 <!--<button type="button" class="slide-toggle">Slide Toggle</button> -->
                 <div class="row">
                     <header>
-                        <div class="col-md-7">
+                        <div class="col-md-10">
                             <nav class="navbar-default pull-left">
                                 <div class="navbar-header">
                                     <button type="button" class="navbar-toggle collapsed" data-toggle="offcanvas" data-target="#side-menu" aria-expanded="false">
@@ -42,8 +87,9 @@
                                 </div>
                             </nav>
                             <div class="search hidden-xs hidden-sm">
-                                <input type="text" placeholder="Search a tweeter hashtag..." id="search">
-
+                                <form id="search-form" action="/twitter" method="post">
+                                    <input type="text" name="search" placeholder="Search a tweeter hashtag..." id="search">
+                                </form>
                             </div>
                         </div>
                     </header>
@@ -51,49 +97,44 @@
                 <div class="user-dashboard">
                     <h1>Tweet Analyzer</h1>
                     <div class="row">
-                        <div class="col-md-5 col-sm-5 col-xs-12 gutter">
+                        <div class="col-md-6 col-sm-6 col-xs-12 gutter">
 
                             <div class="sales">
                                 <h2>Clarfai</h2>
+                                <br>
+                                <br >
+                                <div id="piechart1" style="width: 600px; height: 350px;"></div>
                             </div>
                         </div>
-                        <div class="col-md-7 col-sm-7 col-xs-12 gutter">
+                        <div class="col-md-6 col-sm-6 col-xs-12 gutter">
 
                             <div class="sales report">
                                 <h2>Watson</h2>
+                                <br>
+                                <br>
+                                <div id="piechart2" style="width: 600px; height: 350px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 gutter">
+
+                            <div class="sales">
+                                <h2>Tweets Analyzed</h2>
+                                <br>
+                                <br >
+                                <ul>
+                                    <li class="active">lol</li>
+                                    <li class="active">lol</li>
+                                    <li class="active">lol</li>
+                                    <li class="active">lol</li>
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-    </div>
-
-
-
-    <!-- Modal -->
-    <div id="add_project" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header login-header">
-                    <button type="button" class="close" data-dismiss="modal">×</button>
-                    <h4 class="modal-title">Add Project</h4>
-                </div>
-                <div class="modal-body">
-                            <input type="text" placeholder="Project Title" name="name">
-                            <input type="text" placeholder="Post of Post" name="mail">
-                            <input type="text" placeholder="Author" name="passsword">
-                            <textarea placeholder="Desicrption"></textarea>
-                    </div>
-                <div class="modal-footer">
-                    <button type="button" class="cancel" data-dismiss="modal">Close</button>
-                    <button type="button" class="add-project" data-dismiss="modal">Save</button>
-                </div>
-            </div>
-
         </div>
     </div>
 
