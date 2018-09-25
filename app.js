@@ -12,19 +12,18 @@ var clarifai  = new Clarifai.App({
 })
 
 var toneAnalyzer = new ToneAnalyzerV3({
-    'version_date': '2017-09-21',
-    username: "e20cef90-d928-4529-8000-32e872436e3c",
-    password: "jSDSFGAbtBp7"
-});
+        'version_date': '2017-09-21',
+        username: process.env.WATSONUSERNAME,
+        password: process.env.WATSONPASSWORD
+    });
 
 
-
-var T = new Twit({
-  consumer_key: 'GUWBt296Ge5DRVMEjelygP9Xp',
-  consumer_secret: 'K3O78sWqPK8Fuzc7DQ5Xg0XfjhD8c4mAOlHor4rJVgYqZvZP3n',
-  access_token: '1024747908-Fi5qubuwn2v4tDkm2nulNJCFnTGUXWLcA7pkM8b',
-  access_token_secret: '8SnB3C22vq0HzQZPdq6vGQrujN8i1LePGvKN8hzk7KD0v'
-});
+    var T = new Twit({
+      consumer_key: process.env.TWITCONAPIKEY,
+      consumer_secret: process.env.TWITCONAPIKEYSECRET,
+      access_token: process.env.TWITACCESSTOKEN,
+      access_token_secret: process.env.TWITACCESSTOKENSECRET
+    });
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
