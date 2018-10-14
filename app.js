@@ -8,7 +8,7 @@ var watsonRoutes = require('./routes/watson_routes');
 
 var Clarifai = require('clarifai');
 var clarifai  = new Clarifai.App({
-  apiKey: "51cb209ff80d4ffaa967cc72a0e7f6de"
+  apiKey: process.env.CLARIFAIAPIKEY
 })
 
 var toneAnalyzer = new ToneAnalyzerV3({
