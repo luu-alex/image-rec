@@ -8,7 +8,7 @@ var watsonRoutes = require('./routes/watson_routes');
 
 var Clarifai = require('clarifai');
 var clarifai  = new Clarifai.App({
-  apiKey: "51cb209ff80d4ffaa967cc72a0e7f6de"
+  apiKey: process.env.CLARIFAIAPIKEY
 })
 
 var toneAnalyzer = new ToneAnalyzerV3({
@@ -33,76 +33,62 @@ app.use(bodyParser.json());
 app.use("/watson",watsonRoutes)
 
 app.get("/", function(req,res){
-  //https://api.twitter.com/1.1/search/tweets.json?q=%23superbowl&result_type=recent
-  console.log()
   res.render("landing");
 });
+
 app.post('/twitter', function(req, res){
     console.log(req.body.search)
-  T.get('search/tweets', { q: req.body.search }, function(err, data, response) {
-    // var photos = [];
-    // for (var i=0; i<Math.min(data["statuses"].length,3);i++) {
-    //   photo = (data["statuses"][i]["user"]["profile_image_url"])
-    //   clarifai.models.predict(Clarifai.GENERAL_MODEL, photo).then(
-    //     function(response){
-    //       console.log(response)
-    //       // photos.push(response['outputs'][0]['data']['concepts']);
-    //     },
-    //     function(err){
-    //       console.log("error");
-    //     }
-    //   )
-    // }
-    // console.log(photos);
-
-    var toneParams = {
-      'tone_input': { 'text': data["statuses"][0]["text"] },
-      'content_type': 'application/json'
-    };
-
-    clarifai.models.predict(Clarifai.GENERAL_MODEL, data["statuses"][0]["user"]["profile_image_url"]).then(
-      function(response){ //this is the clarifai response back
-        // photos.push(response['outputs'][0]['data']['concepts']);
-        toneAnalyzer.tone(toneParams, function (error, toneAnalysis) {
-          if (error) {
-            console.log(error);
-            res.send(error);
-          } else {
-            console.log(toneAnalysis); //tone response
-            console.log(response) //clarifai response
-            // return_data.push({toneAnalysis: toneAnalysis})
-          }
+    T.get('search/tweets', { q: req.body.search }).then( function(data) {
+        var photos = [];
+        var tweet = [];
+        for (i=0; i<3; i++) {
+            photos.push(data["data"]["statuses"][i]["user"]["profile_image_url"])
+            tweet.push(data["data"]["statuses"][i])
+        }
+        // console.log({photos,tweet})
+        return [photos,tweet]
+    }).then(async function(response){
+        console.log("1st then");
+        clarifyArray = [];
+        for (i=0; i<response[0].length; i++) {
+            await clarifai.models.predict(Clarifai.GENERAL_MODEL, response[0][i])
+            .catch(function(err){
+                console.log(err)
+            }).then(
+                function (clarify){
+                    // console.log("clarify:\n"+clarify);
+                    clarifyArray.push(clarify);
+                    // res.send(clarify);
+                    // photos.push(response['outputs'][0]['data']['concepts']);
+                }
+            )
+        }
+        return [clarifyArray,response[1]]
+    }).then(function(resp) {
+        console.log("2nd then");
+        var tones = {};
+        const tweets = resp[1];
+        let finalArray = [];
+        tweets.forEach((value) => {
+            var toneParams = {
+                'tone_input': { 'text': resp[1][i]["text"] },
+                'content_type': 'application/json'
+            };
+            toneAnalyzer.tone(tonePsarams, asyncFunction(error,toneAnalysis).then(result) =>{
+                if(error){
+                    reject(error);
+                } else{
+                    return toneAnalysis;
+                }
+            });
         });
-      },
-      function(err){
-        console.log("error");
-      }
-    )
-
-
-    var clean_data=[];
-    var return_data=[];
-
-    var tones = [];
-    // for(var i = 0; i < Math.min(4, data["statuses"].length);i++){
-    //     clean_data.push(data["statuses"][i]["text"] + "\n\n");
-    //
-    //     toneAnalyzer.tone(toneParams, function (error, toneAnalysis) {
-    //       if (error) {
-    //         console.log("error")
-    //         console.log(error);
-    //         res.send(error);
-    //       } else {
-    //         tones.push(toneAnalysis);
-    //         // return_data.push({toneAnalysis: toneAnalysis})
-    //       }
-    //     });
-    // }
-    // console.log(return_data);
-    // console.log(tones.length)
-    // console.log(photos.length)
-    res.send("success")
-  });
+        const resolvedFinalArray = await Promise.all(finalArray); // resolving all promises
+        return [resp[0],resolvedFinalArray];
+        console.log("2nd then complete");
+    }).then(function(final){
+        console.log("final value:" +final[1]);
+        res.send("success")
+    })
 })
 
 app.get("/home", function(req,res){
